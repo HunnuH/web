@@ -146,3 +146,61 @@
   - Express
   - Mongo db
   - Angular
+
+### 브라우저 객체(BOM)
+
+- 웹페이지를 구성하는 모든 컨텐츠를 접근하는 방법
+
+  - window
+
+  - document
+
+  - form
+
+    - 객체 제어 : html태그에 정의되어 document에 출력되는 모든 구성요소를 객체로 정의하고 사용하기 위해서 name속성을 정의해야 한다.
+
+    - 모든 브라우저 객체는 계층구조를 갖고 있다. 
+
+      - ```html
+        <body>
+            <form name="myform">
+               <input type="text" name="id"> 
+               
+            </form>    
+        </body>
+        <!-- 위처럼 정의된 text를 접근하는 방법-->
+        window.document.myform.id
+        ```
+
+      - html로 웹페이지를  구성하는 컨텐츠를 저으이
+
+      - css를 이용해서 레이아웃과 스타일 적용
+
+        
+
+  - image
+
+  - history
+
+  
+
+### window 객체
+
+- 대화상자 관련
+  - `alert` :안내창
+  - `prompt`: 사용자로부터 입력을 받기 위한 창
+  - `confirm`: 상호작용을 위한 선택창
+- popup 관련
+  - `open()`: 새창을 실행
+  - `close()` :창을 닫기
+  - `opener객체`:popup창을 실행해 준 부모창
+- 데이터처리
+  - `pareInt`: 숫자모양을 한 문자열을 숫자로 변환
+  - `isNaN`:입력한 문자열이 숫자인지 문자인지 판단
+  - `eval`: 매개변수로 전달된 문자들을 실제로 실행
+  - `trim`: 공백을 제거
+- 자동실행
+  - 자바스크립트 함수 명령문을 일정 시간이 지난 후에 자동으로 실행할 수 있도록 지원
+  - `setTimeout`: 자바스크립트 함수 명령문을 일정 시간이 지난 후에 한 번만 자동으로 실행
+    - 작업id = setTimeout("실행할 자바스크립트 명령문 or 함수명");
+  - 
