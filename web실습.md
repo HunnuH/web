@@ -649,3 +649,40 @@
 </html>
 ```
 
+### 로그인 시스템
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+			<script type="text/javascript">
+							function rel(form) {
+								data = form.id.value;
+								if(data.length<4) {
+									myrel = "4글자 이상의 글자를 입려하세요"
+									document.getElementById("val").innerHTML = myrel;
+								} else {
+									if(data=="java"){
+										myrel0 ="이미 사용중인 아이디 입니다."
+										document.getElementById("val").innerHTML = myrel0;
+									}else{
+									myrel2 ="사용가능한 아이디 입니다."
+									document.getElementById("val").innerHTML = myrel2;
+									}
+								} 
+							}
+			</script>
+</head>
+<body>
+	<h1>티몬 회원가입</h1>
+		<h2>필수항목</h2>
+			<form  name = "myform">
+					아이디 : <input type="text" name="id"  onkeyup="rel(this.form)" >
+			</form>
+					<div id="val" style="color : red"></div>
+</body>
+</html>
+```
+
