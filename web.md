@@ -212,10 +212,10 @@
 - 플랫폼이나 언어에 상관없이 컨텐츠의  구조를 통적으로 업데이트하고 엑세스 할 수 있도록 w3c에서 표준으로 정의해 놓은 문서 접근 방법
 - `word wide web consortium` : 브라우저 내부에 포함된 html이나 css명세에 따라서 html문서를 해석하는데 이것을 w3c에서 정한다
 - Dom구성요소
-  - document : dom객체에서 가장 상위 객체
-  - element :  html문서를 구성하는 모든 컨텐츠
-  - attribute : 태그내부에 정의되어 있는 속성
-  - text : 태그와 태그사이에 입력한 문자열 혹은  공백도 문자열 객체로 인식
+  - `document` : dom객체에서 가장 상위 객체
+  - `element `:  html문서를 구성하는 모든 컨텐츠
+  - `attribute` : 태그내부에 정의되어 있는 속성
+  - `text` : 태그와 태그사이에 입력한 문자열 혹은  공백도 문자열 객체로 인식
   - Dom에서 사용할수 있는 속성
     - `nodeValue` : 노드의 값
     - `nodeName`: 노드의 이름
@@ -249,18 +249,18 @@
 - 크로스브라우징을 구현
   - 모든 브라우저에서 동일한 뷰를 볼수있도록 구성
 - 기능
-  - DOM : 객체의 필수속성, 메소드, 노드제어, 스타일 제어
+  - `DOM` : 객체의 필수속성, 메소드, 노드제어, 스타일 제어
   - Ajax
   - 플러그인 : 필요한 기능을 만들어서 제공하는 것 (JQuery로 만들어진 완제품) 
   - Effect : 애니메이션 효과
 - 사용방법
   - 라이브러리 파일을 직접 다운 받아 프로젝트에 추가후 사용
-    - compress.ver :압축 버전 로딩속도 빠름 (jquery-3.6.0.js)
-    - un compress.ver : 개발자 버전 수정해서 작업이 빠름(jquery-3.6.0.min.js)
+    - `compress.ver` :압축 버전 로딩속도 빠름 (jquery-3.6.0.js)
+    - `un compress.ver` : 개발자 버전 수정해서 작업이 빠름(jquery-3.6.0.min.js)
   - cdn방식
     - 외부사이트에서 공유한 jquery라이브러리 경로 추가하여 작업
 - 형식
-  - ready handle 이용 
+  - `ready handle` 이용 
     - 자바스크립트 이므로` <script></script>`태그내에서 작업
     - `ready handler`는 브라우저 내부에서 dom객체가 생성이 완료되면 jquery작업을 시작하겠다는 의미
       - $(document).ready(function(){        })
@@ -281,6 +281,32 @@
   - `$(":input태그의 type")` : 해당 type속성으로 정의된 form태그의 요소가 선택(HTML의 요소에도 적용)
   - `$("태그명:even")`: 짝수
   - `$("태그명:odd")` : 홀수
-
 - DOM제어 메소드
-  - 
+  - `append()` :선택된 요소의 lastchild 컨텐츠 추가
+  - `prepend() `:선택된 요소의 firstchild 컨텐츠 추가
+  - `after()` :선택된 요소의 뒤에 새로운 컨텐츠 추가
+  - `before() `:선택된 요소의 앞에 새로운 컨텐츠 추가
+  - `remove()` : 선택된 요소와 그 자식 요소를 삭제
+  - `empty() `:선택된 요소의 자식요소 삭제
+- setter/getter 메소드
+  - `text()` : 원하는 위치에 텍스트 추가 > set/get둘다 가능(html태그 적용불가)
+  - `val() `:  입력필드의 값을 반환하거나 설정 > set/get둘다 가능
+  - `html()` : 원하는 위치에 html태그를 추가
+  - `css()` : css속성을 설정
+  - `attr() `: 태그의 속성을 셋팅 dom의 표중 api메소드에서 setattribure와 동일
+- 이벤트
+  - `on()`를 이용  - 정식
+    - bind의 성능을 개선
+  - `bind()`를 이용 
+  - 이벤트에 대한 약식 표현
+    - `객체.click()`  
+- effect
+  - `hide()` : 선택된 요소를 화면에서 감춘다
+  - `animate` : 커스텀 애니메이션을 만들때 사용
+    - 형식 :` .animate( properties [,duration] [,easing] [,complete] )`
+    - `properties `: {  }로 표현이 가능하며 필수로 지정해야 하는 매개변수(css속성)
+    - `duration (speed) `: 효과가 나타나는 속도를 의미
+    - `easing` : 포인트 이동할때 애니메이션 속도를 지정
+    - `complete` : callback으로 함수명을 명시
+- jquery ui
+- bootstrap
