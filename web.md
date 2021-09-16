@@ -245,20 +245,25 @@
 ### J-Query
 
 - 자바스크립트로 만들어진 라이브리이며 프레임워크 처럼 사용
+
 - DOM을 쉽게 사용할 수 있도록 지원
+
 - 크로스브라우징을 구현
   - 모든 브라우저에서 동일한 뷰를 볼수있도록 구성
+  
 - 기능
   - `DOM` : 객체의 필수속성, 메소드, 노드제어, 스타일 제어
   - Ajax
   - 플러그인 : 필요한 기능을 만들어서 제공하는 것 (JQuery로 만들어진 완제품) 
   - Effect : 애니메이션 효과
+  
 - 사용방법
   - 라이브러리 파일을 직접 다운 받아 프로젝트에 추가후 사용
     - `compress.ver` :압축 버전 로딩속도 빠름 (jquery-3.6.0.js)
     - `un compress.ver` : 개발자 버전 수정해서 작업이 빠름(jquery-3.6.0.min.js)
   - cdn방식
     - 외부사이트에서 공유한 jquery라이브러리 경로 추가하여 작업
+  
 - 형식
   - `ready handle` 이용 
     - 자바스크립트 이므로` <script></script>`태그내에서 작업
@@ -266,6 +271,7 @@
       - $(document).ready(function(){        })
   - 일반적인 jquery문법
     - `$("선택자").동작(  )`
+  
 - 선택자
   - `$(객체)` : 선택자로 지정한 객체에 적용
   - `$("*") `: dom객체의 모든 요소
@@ -281,6 +287,7 @@
   - `$(":input태그의 type")` : 해당 type속성으로 정의된 form태그의 요소가 선택(HTML의 요소에도 적용)
   - `$("태그명:even")`: 짝수
   - `$("태그명:odd")` : 홀수
+  
 - DOM제어 메소드
   - `append()` :선택된 요소의 lastchild 컨텐츠 추가
   - `prepend() `:선택된 요소의 firstchild 컨텐츠 추가
@@ -288,18 +295,21 @@
   - `before() `:선택된 요소의 앞에 새로운 컨텐츠 추가
   - `remove()` : 선택된 요소와 그 자식 요소를 삭제
   - `empty() `:선택된 요소의 자식요소 삭제
+  
 - setter/getter 메소드
   - `text()` : 원하는 위치에 텍스트 추가 > set/get둘다 가능(html태그 적용불가)
   - `val() `:  입력필드의 값을 반환하거나 설정 > set/get둘다 가능
   - `html()` : 원하는 위치에 html태그를 추가
   - `css()` : css속성을 설정
   - `attr() `: 태그의 속성을 셋팅 dom의 표중 api메소드에서 setattribure와 동일
+  
 - 이벤트
   - `on()`를 이용  - 정식
     - bind의 성능을 개선
   - `bind()`를 이용 
   - 이벤트에 대한 약식 표현
     - `객체.click()`  
+  
 - effect
   - `hide()` : 선택된 요소를 화면에서 감춘다
   - `animate` : 커스텀 애니메이션을 만들때 사용
@@ -308,5 +318,62 @@
     - `duration (speed) `: 효과가 나타나는 속도를 의미
     - `easing` : 포인트 이동할때 애니메이션 속도를 지정
     - `complete` : callback으로 함수명을 명시
+  
 - jquery ui
+
 - bootstrap
+
+  
+
+### JDBC( Java DataBase Cconnectivity)
+
+- 자바로` DBMS`연동을 하기위한 기술
+- 오라클에 접속해서` JDBC`를 사용하기전 설정
+  - 오라클 드라이버를 다운
+  - 오라클드라이버를` JVM`이 인식할수있도록 설정
+    - 이클립스가 아닌경우 
+      - `jdk`의` lib`폴더나` tomcat`의 `lib`에 복사에서 사용해도 되지만 가급적 자제 (충돌할 경우가 생김)
+    - 이클립스 사용하는 경우
+      - 작업프로젝트 선택
+      - 프로젝트 선택 후 단축 메뉴를 `[buid path] > [cinfigure build path..]` 선택
+      - 대화상자에서 `[libraries]`탭 선택
+      - `Modulepath`선택
+      - `[add external jars..]`선택후 라이브러리 파일의 경로를 찾아서 등록
+
+- JAVA API를 이용해서 JDBC연동
+
+  - 오라클 드라이버 로딩
+
+    - 오라클 드라이버를 `jvm`이 인식할 수 있도록 핵심클래스를 메모리에 로딩
+
+    - `Java.lang`패키지에 `class`라는 클래스를 이용해서 오라클 드라이버의 핵심클래스를 메모리에 로딩
+
+    - `[MySQL] `: 핵심클래스명 - com.mysql.jdbc.Driver
+
+      ​                   `Class.forName("com.mysql.jdbc.Driver")`
+
+- DB서버에 연결
+
+  - `driverManager`의 `getConnection`이라는 메소드를 이용해서 DB서버에 연결
+
+    - `static`메소드이므로 클래스이름으로 엑세스
+
+    - `throws`하고 있는 `SQLexception`은  `Exception`하위이르모 문법적으로 `Exception`에 대한 처리를 해야한다
+
+    - 매개변수
+
+      - `url` : 연결문자열(어떤 `DBMS`를 쓰느냐에 따라서 다른 형식의 문자열을 작성해야 한다)
+      - `user` : 사용자계정
+      - `password` : 패스워드
+
+    - 리턴타입
+
+      - java.sql.Connection을 리턴
+
+    - SQL실행
+
+      - `statement`사용
+
+        - `executeupdate `: `insert`, `update`, `delete`명령문을 실행
+
+          ​								매개변수로 sql문을 전달하면 실행결과로 몇개의 row가 실행 반영되었는지 리턴
