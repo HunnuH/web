@@ -686,3 +686,205 @@
 </html>
 ```
 
+
+
+### web 제작
+
+```html
+<!--메인 페이지-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    .row.content {height: 450px}
+    
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" >###</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="http://localhost:8088/clientweb/bootstrap/task/site_making.html#">Home</a></li>
+        <li><a href="#">전체글</a></li>
+        <li><a href="http://localhost:8088/clientweb/bootstrap/task/site_making2.html">가입인사</a></li>
+        <li><a href="#">자유게시판</a></li>
+        <li><a href="#">정보</a></li>
+        <li><a href="#">후기</a></li>
+        <li><a href="#">Q&A</a></li>
+        <li><a href="#">공지사항</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-1 sidenav">
+      <p><a href="https://www.musinsa.com/" > 무신사</a></p>
+      <p><a href="https://kream.co.kr/">KREAM</a></p>
+    </div>
+    <div class="col-sm-8 text-left"> 
+    <div class="row">
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">
+					  <ol class="carousel-indicators">
+						    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						    <li data-target="#myCarousel" data-slide-to="1"></li>
+						    <li data-target="#myCarousel" data-slide-to="2"></li>
+					  </ol>
+					  <div class="carousel-inner">
+					    <div class="item active">
+					      <img src="../../images/p1.jpg" style="width:100%;  height:300px">
+					    </div>
+					
+					    <div class="item">
+					      <img src="../../images/p2.jpg" style="width:100%;  height:300px">
+					    </div>
+					
+					    <div class="item">
+					      <img src="../../images/p3.png" style="width:100%;  height:300px">
+					    </div>
+					  </div>
+					
+      <h1>comunity</h1>
+      <p>패션 관련 커뮤니티입니다.</p>
+      <hr>
+
+       <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+    </div>
+    </div>
+    </div>
+    <div class="col-lg-2 sidenav">
+      <div class="well">
+         <img src="../../images/u.jpg" width="100%" height="200">
+      </div>
+      <div class="well">
+        <img src="../../images/k.jpg" width="100%" height="200">
+        
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!--가입인사 페이지-->
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>가입인사</h1>      
+    <p>처음 방문해주신 분들은 필히 작성부탁드립니다.</p>
+  </div>
+</div>
+  
+<div class="container-fluid bg-3 text-center">    
+  <h3>새로오신분</h3><br>
+  <div class="row">
+    <div class="col-sm-3">
+      <p>원빈</p>
+      <img src="../../images/a1.jpg" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-3"> 
+      <p>정우성</p>
+      <img src="../../images/a2.jpg" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-3"> 
+      <p>강동원</p>
+      <img src="../../images/a3.jpg" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-3">
+      <p>이나영</p>
+      <img src="../../images/a4.jpg" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+  </div>
+</div><br>
+
+</body>
+</html>
+
+```
+
+### 오라클 연동
+
+```java
+package jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class updateTest {
+	public static void main(String[] args) {
+		
+		String url = "jdbc:oracle:thin:@ip주소:포트:xe";
+		String user = "scott";
+		String password = "tiger";
+		String sql = "update member set addr ='서울특별시' where addr ='서울'";
+		try {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		System.out.println("driver succes");
+		Connection con = DriverManager.getConnection(url,user,password);
+		System.out.println("Connection succes");
+		Statement stmt = con.createStatement();
+		System.out.println("statement succes");
+		int result = stmt.executeUpdate(sql);
+		System.out.println("result succes");
+		}catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+```
+
