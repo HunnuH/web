@@ -370,10 +370,37 @@
 
       - java.sql.Connection을 리턴
 
-    - SQL실행
+      -   DriverManager클래스의 getConnection메소드는 DB서버에 연결하고 연결정보를 객체로 만들어서 리턴한다. 
 
-      - `statement`사용
+      - 리턴하는 연결정보를 표현해놓은 객체가  java.sql.Connection 표준API는  java.sql.Connection이지만
+        연결정보를 노출시키면 안되므로 실제로는 Connection을 상속받은 오라클사에서 만든 Connection의 하위객체가 리턴된다.
 
-        - `executeupdate `: `insert`, `update`, `delete`명령문을 실행
+      -  Connection은 스펙만 제시하는 인터페이스이고 이를 상속받아서 DBMS제조사에서 작성한 객체를 실제로 사용하는 것
+           다형성이 적용되어 있다.
 
-          ​								매개변수로 sql문을 전달하면 실행결과로 몇개의 row가 실행 반영되었는지 리턴
+      - SQL실행
+
+        - `statement`사용
+
+          - `executeupdate `: `insert`, `update`, `delete`명령문을 실행
+
+            ​								매개변수로 sql문을 전달하면 실행결과로 몇개의 row가 실행 반영되었는지 리턴
+          
+        -  PreparedStatement를 사용
+                ① executeUpdate : insert, update, delete명령문을 실행
+                ② executeQuery : select명령문을 실행
+                => 리턴타입이나 실행 모두 Statement와 동일하나 매개변수로 sql을 전달하지 않는다.
+        
+      - 결과처리
+
+        - nsert, delete , update
+                - 모두 int를 리턴하기 때문에 동일한 방법으로 처리
+                      int result = stmt.executeUpodate(sql)
+           -  select
+                      sqlplus프로그램을 이용해서 select sql문을 실행하면 결과로 테이블(2차원표의 형태)이 리턴
+                      이 테이블을 자바로 만든 application에서 사용할 수 있도록 모델링해 놓은 클래스가 ResultSet
+
+         - 자원반납
+
+                 - 클라이언트가 점유해서 사용하던 자원을 반납해야 한다.
+                 - close메소드를 이용해서 반납하고 객체가 만들어진 순서가 아니라 가장 마지막에 만들어진 객체부터 해제한다.                                         
