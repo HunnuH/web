@@ -477,3 +477,66 @@
     - 클라이언트가 입력한 모든 내용의 데이터를 전송 가능
     - 파일업로는 무조건 post방식으로 처리
 
+
+
+### JSP 
+
+- 지시자
+
+- 스크립트요소 : `<%` 로 시작하는 것을 스크립트 요소라고 한다
+
+  - 주석문  : `<%-- -- %>`
+
+  - 스크립트릿  
+    - 자바코드를 쓸수있는 스크립트요소
+    - `<% %>`
+    - html태그와 같이 사용가능
+    - `<% %>`안에 작성하는 모든 코드는 _jspservice메소드 내부에 자동으로 추가된다
+    - java처럼 java.lang패키지 뺴고 모든 패키지는 import해야 한다.
+    - 스크립트릿 안에서는 _jspservice메소드 내부에 선언된 모든 지역변수를 사용할 수있다.
+  - 표현식
+    - 문자열이나 메소드 호출 결과, 연산식 등을 웹 페이지에 출력하기 위한 목적으로 사용
+    - `<%= 변수, 메소드호출(리턴타입), 연산식...%>`
+    - 표현식 내부에서 사용하는 값들이 out.print메소드 내부에 생성
+    - ;을 추가하지 않는다
+    - 표현식은 자바에서 만들어진 값을 웹 페이지에 출력할 목적으로 제공되는 스크립트요소이며 스크립트릿과 html태과 같이 사용 할수 있다.
+  - 선언문
+    - `<%! %>`
+    - jsp문서에서는 거의 사용하지 않는다
+    - 멤버변수나 멤버메소드를 정의하기 위해 사용
+
+- 내장객체
+
+- 액션태그
+
+- EL& JSTL
+
+  
+
+### 요청재지정
+
+- 클라이언트로 부터 최초로 받은 요청을 실행하고 새로운 요청을 하는방법
+- 화면을 분리하고 분리된 화면으로 응답하기 위해 필요한 기술
+- MVC패턴을 이해하고 개발하기 위해 반드시 필요한 개념
+- 데이터 공유
+  - 서블릿에서 발생한 데이터를 요청재지정 하는 뷰로 넘겨주기 위해서 데이터를 서블릿에서 공유해야 한다.
+    - page(this - 현재jsp페이지에서만 공유)  >> javax.servlet.jsp.pagecontext
+    - request(요청객체 - 한번의 request가 응답되는 동안 실행되는 객체들이 공유)  >> HttpservletRequest
+    - session(세션객체 - 세션이 생성된 순간 브라우저에서 보여지는 모든 웹 페이지에서 데이터를 공유) >> Httpsession
+    - application(context 객체 - 톰캣메모리에 공유해서 톰캣에서 실행되는 모든 웹 페이지에 공유 )  >> servletcontext
+- 데이터 저장
+  - 객체.setAttribute("저장할 attribute의 이름", 저장할 객체)
+
+- 데이터 가져오기
+  - object 변수 = 객체.getAttribute("공유된 attribute의 이름") 
+- 요청재지정
+  - redirect
+    - HttpservletResponse의 sendRedirect메소드를 이용해서 처리
+    - response.sendRedirect("요청재지정될 wev application의 path")
+    - 최초요청된 서블릿이 response된 후 재요청하는 방법이므로 데이터를 공유 할수없다.
+  - forward
+    - RequestDispatcher rd = request.getRequestDispatcher("요청재지정으로 실행할 application의 path")
+    - rd.forward(request객체, response객체)
+    - 최초 요청된 서블릿이 실행된 후 응답하지 않은 상태에서 요청재지정으로 명시된 application이 응답
+    - 한번 요청으로 모든 application을 실행 따라서 데이터 공유가 가능
+  - include
