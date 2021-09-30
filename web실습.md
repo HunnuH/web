@@ -888,3 +888,709 @@ public class updateTest {
 
 ```
 
+### DBMS연동 
+
+```java
+//DButil
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DBUtil {
+	static {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	public static Connection getConnect() {
+		String url = "jdbc:oracle:thin:@ip:1521:xe";
+		String user = "scott";
+		String password = "tiger";
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(url,user,password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
+	
+	public static void close(ResultSet rs, Statement stmt, Connection con) {
+		try {
+			if(rs!=null) rs.close();
+			if(stmt!=null) stmt.close();
+			if(con!=null) con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public static void close(Connection con) {
+		try {
+			if(con!=null) con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+//memberDAO	
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+public class MemberDAO {
+	public int insert(MemberDTO user) {
+		System.out.println("웹페이지에 사용자가 입력한 데이터:"+user); 
+		String sql = "insert into member values(?,?,?,?,1000,?)";
+		Connection con = null;
+		PreparedStatement stmt = null;		
+		int result = 0;
+		try {			
+			con = DBUtil.getConnect();
+			stmt = con.prepareStatement(sql);			
+			stmt.setString(1, user.getId());
+			stmt.setString(2, user.getPass());
+			stmt.setString(3, user.getName());
+			stmt.setString(4, user.getAddr());
+			stmt.setString(5, user.getDeptno());
+				
+			result = stmt.executeUpdate();
+			System.out.println(result+"개 행 삽입성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(null, stmt, con);
+		}
+		return result;
+	}
+	public int insert(String id, String pass, String name, String addr, String deptno) {
+		String sql = "insert into member values(?,?,?,?,1000,?)";
+		Connection con = null;
+		PreparedStatement stmt = null;			
+		int result = 0;
+		try {			
+			con = DBUtil.getConnect();
+			stmt = con.prepareStatement(sql);			
+			stmt.setString(1, id);
+			stmt.setString(2, pass);
+			stmt.setString(3, name);
+			stmt.setString(4, addr);
+			stmt.setString(5, deptno);
+				
+			 result = stmt.executeUpdate();
+			System.out.println(result+"개 행 삽입성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(null, stmt, con);
+		}
+		return result;
+	}
+
+	public void update(String id,  String addr) {
+		String sql = "update member ";
+		sql = sql+"set addr=? ";
+		sql = sql+"where id=?";
+		Connection con = null;
+		PreparedStatement stmt = null;
+		try {
+			con = DBUtil.getConnect();
+			stmt = con.prepareStatement(sql);	
+			stmt.setString(1, addr);
+			stmt.setString(2, id);
+			System.out.println("Statement객체 생성완료" + stmt);
+			int result = stmt.executeUpdate();
+			System.out.println(result+"개 행 수정성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(null,stmt,con);
+		}	
+	}
+	
+	public int delete(String id) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from member ");
+		sql.append("where id=? ");
+		Connection con = null;
+		PreparedStatement stmt = null;
+		int result = 0;
+		try {
+			con = DBUtil.getConnect();
+			System.out.println("커넥션성공!"+ con);
+			stmt = con.prepareStatement(sql.toString());
+			stmt.setString(1, id);
+			System.out.println("Statement객체 생성완료" + stmt);
+			 result =  stmt.executeUpdate();
+			System.out.println(result+"개 행 삭제성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(null, stmt,con);
+		}
+		return result;
+	}
+	
+	public ArrayList<MemberDTO> getMemberList() {
+		System.out.println("dao요청");
+		ArrayList<MemberDTO> userlist = new ArrayList<MemberDTO>();
+		MemberDTO user = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from member");	
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = DBUtil.getConnect();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql.toString());
+			while(rs.next()) {
+				user = new MemberDTO(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+				userlist.add(user);
+			}	
+			System.out.println("조회성공");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(rs, stmt, con);
+		}
+		return userlist;
+	}
+	
+	public ArrayList<MemberDTO>search(String search) {
+		System.out.println("dao search 요청 : "+search);
+		ArrayList<MemberDTO> userlist = new ArrayList<MemberDTO>();
+		MemberDTO user = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from member where addr like ? ");	
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = DBUtil.getConnect();
+			stmt = con.prepareStatement(sql.toString());
+			stmt.setString(1,  "%"+search+"%");
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				user = new MemberDTO(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+				userlist.add(user);
+			}	
+			System.out.println("dao >>>>"+userlist.size());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(rs, stmt, con);
+		}
+		return userlist;
+	}
+	
+	public MemberDTO read(String id) {
+		System.out.println("da0 >>>>>" +id);
+		MemberDTO user = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select * from member where id like ? ");	
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = DBUtil.getConnect();
+			stmt = con.prepareStatement(sql.toString());
+			stmt.setString(1,  id);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				user = new MemberDTO(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(rs, stmt, con);
+		}
+		return user ;		
+	}
+}
+
+//memberDTO
+public class MemberDTO {
+	private String id; 
+	private String pass;
+	private String name;
+	private String addr;
+	private int point;
+	private String deptno;
+	public MemberDTO() {
+		
+	}
+	public MemberDTO(String id, String addr) {
+		super();
+		this.id = id;
+		this.addr = addr;
+	}
+	public MemberDTO(String id, String pass, String name, String addr, String deptno) {
+		super();
+		this.id = id;
+		this.pass = pass;
+		this.name = name;
+		this.addr = addr;
+		this.deptno = deptno;
+	}
+	public MemberDTO(String id, String pass, String name, String addr, int point, String deptno) {
+		super();
+		this.id = id;
+		this.pass = pass;
+		this.name = name;
+		this.addr = addr;
+		this.point = point;
+		this.deptno = deptno;
+	}	
+	public String toString() {
+		return "MemberDTO [id=" + id + ", pass=" + pass + ", name=" + name + ", addr=" + addr + ", point=" + point
+				+ ", deptno=" + deptno + "]";
+	}
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAddr() {
+		return addr;
+	}
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
+	public String getDeptno() {
+		return deptno;
+	}
+	public void setDeptno(String deptno) {
+		this.deptno = deptno;
+	}	
+}
+
+//regist.html
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+			<form role="form" class="form-horizontal" action="/serverweb/member/insert.do" method="POST"  name="myform">
+				<fieldset>
+					<div id="legend">
+						<legend>아래 양식을 작성해주세요.</legend>
+					</div>
+					<div class="form-group">
+						<!-- 부서코드 -->
+						<label class="control-label col-sm-2" for="orgcode">부서코드</label>
+						<div class="col-sm-3">
+							<input type="text" id="orgcode" name="deptno"
+								placeholder="부서코드" class="form-control"
+								 required>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<!-- 성명-->
+						<label class="control-label col-sm-2" for="orgname">성명</label>
+						<div class="col-sm-3">
+							<input type="text" id="orgname" name="name"
+								placeholder="성명" class="form-control" minlength="2">
+
+						</div>
+					</div>
+					<div class="form-group">
+						<!-- 사번-->
+						<label class="control-label col-sm-2" for="id">사번</label>
+						<div class="col-sm-3">
+							<input type="text" id="id" name="id"
+								placeholder="사번" class="form-control" 
+								minlength="4" required onkeyup="runAjax()">
+							
+						</div>
+						<span id="checkVal"></span>
+					</div>
+					
+					<div class="form-group">
+						<!-- 패스워드-->
+						<label class="control-label col-sm-2" for="pass">패스워드</label>
+						<div class="col-sm-3">
+							<input type="text" id="pass" name="pass"
+								placeholder="패스워드" class="form-control" minlength="4" >
+
+						</div>
+					</div>
+					<div class="form-group">
+						<!-- 주소-->
+						<label class="control-label col-sm-2" for="addr">주소</label>
+						<div class="col-sm-3">
+							<input type="text" id="addr" name="addr" 
+							placeholder="주소"
+								class="form-control" minlength="3" required>
+
+						</div>
+					</div>
+					<!-- <div class="form-group">
+						포인트
+						<label class="control-label col-sm-2" for="point">포인트</label>
+						<div class="col-sm-3">
+							<input type="text" id="point" name="point" 
+							placeholder="포인트"
+								class="form-control" minlength="4" required>
+
+						</div>
+					</div> -->
+					
+					<div class="form-group">
+						<!-- Button -->
+						<div class="col-sm-3 col-sm-offset-2">
+							<input type="submit" value="가입하기" class="btn btn-success"/>
+						</div>
+						<a href="/serverweb/member/search.do?action=LIST">회원목록조회</a>
+					</div>
+				</fieldset>
+			</form>
+	</div>
+</body>
+</html>
+
+//search.html
+<!DOCTYPE html>
+<html>
+		<head>
+		<meta charset="UTF-8">
+<title>Insert title here</title>
+		</head>
+			<body>
+				<form method="post" action="/serverweb/member/search.do?action=SEARCH">
+					검색:
+						<select name="category">
+							<option value="id">아이디</option>
+							<option value="name">이름</option>
+							<option value="addr">주소</option>
+							<option value="deptno">부서</option>
+						</select>
+							<input type="text"  name="search">
+							<input type="submit" value="검색">
+				</form>
+			</body>
+</html>
+                            
+//search &list servlet                            
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import member.MemberDAO;
+import member.MemberDTO;
+
+@WebServlet(name = "search", urlPatterns = { "/member/search.do" })
+public class MemberSearchServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		//클라이언트 요청정보 추출
+		String action = request.getParameter("action");
+		MemberDAO dao = new MemberDAO();
+		ArrayList<MemberDTO> userlist =  null;
+		if(action.equals("SEARCH")) {
+			String addr = request.getParameter("search");
+			userlist = dao.search(addr);
+		}else {
+				userlist = dao.getMemberList();
+		}
+		//데이터공유
+		request.setAttribute("userlist", userlist);
+		//요청재지정
+		RequestDispatcher rd = request.getRequestDispatcher("/member/list.jsp");
+		rd.forward(request, response);
+	}
+
+}
+
+ //insert servlet
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import member.MemberDAO;
+import member.MemberDTO;
+
+@WebServlet(name = "memberInsert", urlPatterns = { "/member/insert.do" })
+public class MemberInsertServlet extends HttpServlet {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		
+		String deptno = request.getParameter("deptno");
+		String name = request.getParameter("name");
+		String id = request.getParameter("id");
+		String pass = request.getParameter("pass");
+		String addr = request.getParameter("addr");
+		
+		MemberDTO user = new MemberDTO(id ,pass, name, addr, deptno);
+		MemberDAO dao = new MemberDAO();
+		int result = dao.insert(user);
+		
+		PrintWriter out = response.getWriter();
+		if(result >=1 ) {
+			out.print("<h2>삽입성공</h2>");
+		}else {
+			out.print("<h2>삽입실패</h2>");
+		}
+	}
+}                
+  
+ //delete servlet               
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import member.MemberDAO;
+import member.MemberDTO;
+
+@WebServlet(description = "memberDelete", urlPatterns = { "/member/delete.do" })
+public class MemberDeleteServer extends HttpServlet {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		String id = request.getParameter("id");
+		System.out.println(id);
+		
+		MemberDAO dao = new MemberDAO();
+		int result = dao.delete(id);
+				
+		  if(result >0) { out.print("<h2>삭제성공</h2>"); }else {
+		  out.print("<h2>삭제실패</h2>"); }	
+	}
+}
+     
+//read servlet
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import member.MemberDAO;
+import member.MemberDTO;
+
+@WebServlet(description = "memberRead", urlPatterns = { "/member/read.do" })
+public class MemberReadServer extends HttpServlet {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		String id = request.getParameter("id");
+		System.out.println(id);
+		
+		MemberDAO dao = new MemberDAO();
+		MemberDTO dto = dao.read(id);
+		System.out.println("dao >>>>>" +id);		
+		
+		request.setAttribute("user", dto);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/member/member_read.jsp");
+		rd.forward(request, response);
+	}
+}  
+
+//member_read.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="member.MemberDTO"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+		<%
+				MemberDTO user = (MemberDTO)request.getAttribute("user");
+		%>
+
+	<div class="container-fluid">
+			<form role="form" class="form-horizontal"
+		action="/serverweb/action?deptno=<%= "001" %>&state=UPDATE" 
+		method="get">
+				<fieldset>
+					<div id="legend">
+						<legend>아래 양식을 작성해주세요.</legend>
+					</div>
+					<div class="form-group">
+						<!-- 부서코드 -->
+						<label class="control-label col-sm-2" for="deptcode">부서코드</label>
+						<div class="col-sm-3">
+						<%= user.getDeptno() %>	
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<!-- 부서명-->
+						<label class="control-label col-sm-2" for="name">성명</label>
+						<div class="col-sm-3">
+							<!-- 성명을 이곳에 출력하세요 -->
+							<%= user.getName() %>
+							
+						</div>
+					</div>					
+					<div class="form-group">
+						<!-- 아이디-->
+						<label class="control-label col-sm-2" for="id">아이디</label>
+						<div class="col-sm-3">
+							<!-- 아이디를 이곳에 출력하세요 -->
+							<%= user.getId() %>
+						</div>
+					</div>
+					<div class="form-group">
+						<!-- 주소-->
+						<label class="control-label col-sm-2" for="addr">주소</label>
+						<div class="col-sm-3">
+							<!-- 주소를 이곳에 출력하세요 -->
+							<%= user.getAddr() %>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<!-- 패스워드-->
+						<label class="control-label col-sm-2" for="hiredate">패스워드</label>
+						<div class="col-sm-3">
+							<!-- 패스워드를 이곳에 출력하세요 -->
+							<%= user.getPass() %>
+						</div>
+					</div>
+					<div class="form-group">
+						<!-- 포인트-->
+						<label class="control-label col-sm-2" for="point">포인트</label>
+						<div class="col-sm-3">
+							<!-- 포인트를 이곳에 출력하세요 -->
+							<%= user.getPoint() %>
+						</div>
+					</div>
+				
+					<div class="form-group">
+						<!-- Button -->
+						<div class="col-sm-3 col-sm-offset-2">
+							<input type="button"
+							 value="수정" class="btn btn-success"/>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+	</div>
+</body>
+</html>
+                                 
+//list.jsp        
+<%@page import="member.MemberDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"  %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+		<%
+				ArrayList<MemberDTO> userlist = (ArrayList<MemberDTO>)request.getAttribute("userlist");
+		%>
+
+		<h1>사원목록</h1>
+		<hr/>
+		<table border='1' width="600">
+			<tr bgColor='skyblue'>
+				<th>아이디 </th>
+				<th>성명</th>
+				<th>패스워드</th>
+				<th>주소</th>
+				<th>포인트</th>
+				<th>부서번호</th>
+				<th>삭제</th>
+			</tr>
+			<%
+			int size = userlist.size();
+			for(int i =0; i<size; i++) {
+				MemberDTO user = userlist.get(i);
+			%>
+			<tr>
+				<td><a href="serverweb/member/read.do?id= <%= user.getId()%>"><%= user.getId( )%></a></td>
+				<td><%= user.getName() %></td>
+				<td><%= user.getPass() %></td>
+				<td><%= user.getAddr() %></td>
+				<td><%= user.getPoint() %></td>
+				<td><%= user.getDeptno()%></td>
+				<td><a href="serverweb/member/delete.do?id=<%= user.getId() %>">삭제</a></td>
+				</tr>	
+				<% } %>
+			</table>
+</body>
+</html>                                         
+```
+
