@@ -581,40 +581,40 @@
       - DL(Dependency Lookup)
         - 컨테이너가 제공하는 메소드를 통해서 객체를 스프링컨테이너로 부터 가져오는 작업
       - DI(Dependency Injection)
-        - 개발자가 직접코드를 구현을 통해서 스프링 컨테이너로 부터 객체를 받아오는 DL과 다르게 spring내부 클래스에서서 사용하는 객체를 자동으로 mapping시켜주는것
-        - applicationContext객체가 생성될때 자동으로 DI가 처리된다
+        - 개발자가 직접코드를 구현을 통해서 스프링 컨테이너로 부터 객체를 받아오는 DL과 다르게 spring내부 클래스에서서 사용하는 객체를 자동으로` mapping`시켜주는것
+        - `applicationContext객체`가 생성될때 자동으로 DI가 처리된다
         - 개발자는 설정 파일에 생성할 객체와 어떤 방법으로 어떤 객체를 주입할 것인지 명시
-        - 클래스에는 명시한 방법에 따라서 객체를 주입받을 수 있도록 setter메소드나 생성자를 미리 정의해야한다.
-        - Contructor Injection 
+        - 클래스에는 명시한 방법에 따라서 객체를 주입받을 수 있도록 `setter메소드`나 생성자를 미리 정의해야한다.
+        - `Contructor Injection `
           - 생성자를 통해서 객체를 주입하는 방법
           - oop특성이 적용되어 있는 상태
           - xml설정 파일에 생성자 방식으로 객체를 전달할 수 있도록 `<construct-arg>`가 `<bean>`내부에 정의 
           - `<construct-arg>`태그의 갯수가 생성자 매개변수 갯수와 동일
-        - setter injection
-          - setter메소드를 통해서 객체를 주입받는 방식으로 기본은 무조건 기본생성자를 호출한다
+        - `setter injection`
+          - `setter메소드`를 통해서 객체를 주입받는 방식으로 기본은 무조건 기본생성자를 호출한다
           - 컨테이너에 의해서 만들어질 객체는 기본생성자가 정의되어 있어야 한다
-          - setter메소드를 호출할 수 있도록 정의해야 한다
-          - 설정파일에 property태그를 이용해서 객체를 전달받을수 있도록 정의
+          - `setter메소드`를 호출할 수 있도록 정의해야 한다
+          - 설정파일에` property태그`를 이용해서 객체를 전달받을수 있도록 정의
 
 ----
 
 ### 어노테이션 
 
 - 어노테이션을 사용하는경우
-  - 설정파일에 context네임스페이스 추가
+  - 설정파일에 `context`네임스페이스 추가
   - `<context:component-scan >`을 이횽해서 빈을 찾을 패키지를 등록
-  - controller, service, repository로 빈을 등록
+  - `controller`,` service`, `repository`로 빈을 등록
   - DI설정
-    - @Autowide
+    - @Autowide`
       - `<context:component-scan >`에서 선언된 타입과 동일한 객체를 찾아서 injection시켜준다
-    - @Qualifier
+    - `@Qualifier`
       - 동일한 타입의 빈이 두개이상 있는 경우 정확하게 어떤 빈을 연결할 것인지 @Qualifier어노테이션을 이용해서 빈을 설정한다.
 
 - 빈을 생성하는 경우 사용하는 기호
-  - component :  기본 빈을 등록 하고 사용
-  - service : 서비스빈의 역활을 하는 경우 등록
-  - repository : db연동을 위한 빈
-  - controller : 웹에서 사용하는 컨트롤러의 역활응 하는 빈을 등록
+  - `componen`t :  기본 빈을 등록 하고 사용
+  - `service` : 서비스빈의 역활을 하는 경우 등록
+  - `repository` : db연동을 위한 빈
+  - `controlle`r : 웹에서 사용하는 컨트롤러의 역활응 하는 빈을 등록
 
 ----
 
@@ -625,3 +625,71 @@
 - 요청이 하나의 서블릿에서 관리
 - 웹에서 주로 사용하는 패턴
 - 창구역활을 하는 컴포넌트를 제작하겠다는 의미
+
+---
+
+### spring mvc프로젝트 생성
+
+- `pom.xml`파일의 `<proertises>`엘리먼트에서 자바와 스프링 버젼을 변경
+
+  ```java
+  <properties>
+  		<java-version>1.8</java-version>
+  		<org.springframework-version>4.2.4.RELEASE</org.springframework-version>
+  		<org.aspectj-version>1.6.10</org.aspectj-version>
+  		<org.slf4j-version>1.6.6</org.slf4j-version>
+  	</properties>
+  ```
+
+- servlet-api 버젼 변경
+
+  ```java
+  <dependency>
+  			<groupId>javax.servlet</groupId>
+  			<artifactId>javax.servlet-api</artifactId>
+  			<version>3.0.1</version>
+  			<scope>provided</scope>
+  		</dependency>
+  ```
+
+- 프로젝트 속성
+  - `project facets`버젼 변경
+    - java: 1.8  web:3.0
+    - compiler :1.8
+  - 프로젝트 오류 확인
+
+----
+
+### controller 생성
+
+- spring 설절 파일에 `<context:component-scan>`으로 컨트롤러를 추가할 패키지를 추가
+- src에 패키지를 만들고 컨트롤러 추가
+  - `@Controller `어노테이션 기호로 선언
+- 요청할때 실행될 메소드 정의
+  - `@RequestMapping`으로 실행될 요청 path를 등록
+  - `return`될 객체를 명시
+- `src/main/webapp/WEB-INF`폴더 아래 `view`를 만들기
+
+---
+
+### tiles프레임워크 적용
+
+- 화면구성
+  - 라이브러리를 pom.xml에 추가
+  - 레이아웃이 적용되어 있는 템플릿파일과 연결환 jsp파일들이 미리 만들어져 있어야 한다.
+  - tiles설정 파일 작성(tiles-config.xml)
+    - 템플릿 등록 : 템플릿의 각영역을 나누고 영역게 연결해줄 jsp파일을 정의
+  - 템플릿 
+    - jsp파일에 나눠놓은 각 영역이 tiles설정 파일과 일치하도록 설정
+    - tiles프레임워크에서 제공하는 태그를 쓰기위해 등록
+    - 스프링내부에서 실행될때 `DispatcherServlet`이 뷰의 정보를 `viewResolver`에 전달하면 기존에는 컨트롤러에서 넘겨주는 뷰정보에 `perfix와 suffix`를 이용해서 뷰를 완성하는 방식
+      - 뷰정보 : test/index
+      - internalResourceViewResolver를 이용해서 뷰를 완성
+    - 기존방식과 다르게 tiles프레임워크를 이용해서 뷰를 만들수있도록 스프링 설정 파일에 등록
+      - tiles설정 파일이 어떤 파일인지 등록
+      - 만들어야 할 뷰의 정보가 tiles뷰임을 등록
+    - 템플릿을 활용해서 어떤 뷰를 만들 것인지 tiles설정 파일에 등록
+      - `<definition name="index" extends="mainTemplate">`
+      - name 속성 : controller에서 사용할 뷰의 이름
+      - extends속성 :  tiles설정파일에 등록한 템플릿의 이름
+
