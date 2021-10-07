@@ -693,3 +693,67 @@
       - name 속성 : controller에서 사용할 뷰의 이름
       - extends속성 :  tiles설정파일에 등록한 템플릿의 이름
 
+----
+
+### 작업순서
+
+**1. spring mvc project**
+
+**- po**[**m.xml에서**](http://m.xn--xml-k94n91q/) **버전바꾸기**
+
+**- project facets에서 버전바꾸기**
+
+**2. 에러 없이 실행되는거 확인**
+
+**3. 첨부된 erp.zip파일의 압축을 풀고 폴더 배치**
+
+**- res폴더의 하위 폴더는 resources하위로**
+
+**- view폴더의 하위 폴더들은 WEB-INF의 하위 boardlist.jsp에러 발생!!!!**
+
+**=> tiles라이브러리가 추가되기 전에 사용 하고 있기 때문에 발생**
+
+**4. po**[**m.xml에**](http://m.xn--xml-568n/) **tiles라이브러리 추가하기**
+
+**5. /WEB-INF/spring/appServlet/servlet-context.xml을**
+
+**/WEB-INF/config로 이동하고 파일명 spring-config.xml로변경하기** 
+
+**6. web.xml파일을 열고 스프링설정파일 경로 변경하기**
+
+**7. tiles-config.xml설정파일을 생성하고 블로그에 명시되어 있는대로**
+
+**템플릿등록하기**
+
+**8. /WEB-INF/layout/index.jsp와 /WEB-INF/layout/mainLayout.jsp를**
+
+**열고 템플릿에 등록한 영역의 이름을 <tiles:insertAttribute>로 추가**
+
+**9. spring-config.xml파일을 열고 tiles로 뷰를 만들도록 등록하기**
+
+**10. 이제 설정 작업 완료!!**
+
+**서버를 restart하고 오류가 있는지 확인하기**
+
+**오류가 없으면 이제 컨트롤러 만들고 연결하면 됩니다.**
+
+**11. src/main/java에 컨트롤러 만들기**
+
+**=> /WEB-INF/include/top.jsp를 열고 요청 path확인하고 없으면 등록**
+
+**12. Controller를 작성하고 화면을 세 개 요청 할 것이므로** 
+
+**메소드 3개를 정의하고 뷰를 리턴하도록 설정**
+
+**=> top.jsp에 설정한 요청 path로 requestmapping을 등록**
+
+**13. tiles-config.xml에 뷰를 등록**
+
+**템플릿을 기반으로 등록하며 뷰의 이름은 컨트롤러 각 메소드에 정의한** 
+
+**이름으로 등록하기**
+
+**14. 실행해서 결과 확인하기**
+
+---
+
