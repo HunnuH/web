@@ -757,3 +757,28 @@
 
 ---
 
+### Mybatis
+
+- DAO클래스에서 SQL을 분리 할수있도록 지원하는 프레임워크
+
+- DAO에서 DB작업을 위해서 처리되던 중복된 내용을 모두 MYbatis에서 처리한다
+
+- pom.xml에 의존모듈 추가
+
+- Mybatis에서 사용할 설정 파일을 작성
+
+  - mybatis메인 설정파일 : my batis를 사용하기위해서 필요한 내용을 정의
+
+    ​                                           (`/WEB-INF/config/mybatis-config.xml`)
+
+  - mapper : 자바코드로 부터 sql문을 분리하는 것이 목적
+
+- spring설정파일에 등록
+
+  - spring내부에서 mybatis를 사용하기 위해서 설정
+    - connection객체를 관리하기 위한 spring의 클래스를 등록
+      - wAS가 관리하는 Conection pool에서 DB연동을 하기위한 Connection을 받아서 관리할 수 있도록 스프링에서 제공되는 빈을 등록한다
+    - spring에서 mybatis의 핵심 클래스인 sqlSession을 사용할 수 있도록 factory클래스 등록
+      - sqlsession을 만들기 위해서 mybatis설정 파일의 정보를 넘겨준다.
+    - mybatis핵심클래스인 sqlsession사용할수있도록 빈으로 등록
+      - DB연동을 위한 기능을 제공하는 클래스
