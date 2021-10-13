@@ -782,3 +782,42 @@
       - sqlsession을 만들기 위해서 mybatis설정 파일의 정보를 넘겨준다.
     - mybatis핵심클래스인 sqlsession사용할수있도록 빈으로 등록
       - DB연동을 위한 기능을 제공하는 클래스
+
+----
+
+###  비동기 방식 통신
+
+- JQuery에서 Ajax로 요청하기 - get방식
+
+  - ``` 
+    [형식]
+    $.get(url, data, success, dataType)
+    url >> Ajax로 요청할 요청 path
+    data >> Ajax 요청을 실행하기 위해 외부에서 입력받아야 하는 값이 있는 경우 전달
+    		json형식으로 만들어서 전달 : {"name":"value","name":"value"}
+    success >> Ajax요청해서 성공적으로 데이터를 받으면 처리할 내용을 함수로 표현(익명의 함수)
+    dataType >> Ajax요청후 응답으로 전달바을 데이터의 형식(text,json....)
+    ```
+
+- JQuery에서 Ajax로 요청하기 - post방식
+
+  - get과 동일한 형식 
+  - get >> post로 변경
+
+- produces속성  : ajax요청후 클라이언트로 전송할 데이터의 타입을 정의
+
+  - application.text는 ajax요청을 처리하고 클라이언트로 보내는 응답메시지 타입이 text라는 의미
+
+- ajax로  boardcontroller의 메소드를 호출
+
+  -  ``` 
+     $.ajax 
+     url >> ajax통신하기 위해 요청하는 path
+     type >> 요청방식
+     data >> ajax요청할때 컨트롤러로 넘길 데이터
+     success >> 요청이 성공하고 호출되는 함수
+     ```
+
+
+---
+
